@@ -27,7 +27,7 @@ public slots:
     void ScreenDataFromDB(const QTableView *view, int typeRequest);
     void ReceiveStatusConnectionToDB(bool status);
     //void ReceiveStatusRequestToDB(QSqlError err);
-    void ReceiveStatusRequestToDB(QSqlError err, const QStringList *headers);
+    void ReceiveStatusRequestToDB(QSqlError err);
 
 private slots:
     void on_act_addData_triggered();

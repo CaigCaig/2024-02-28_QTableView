@@ -6,11 +6,11 @@ DataBase::DataBase(QObject *parent)
 
     dataBase = new QSqlDatabase();
 
-    simpleQuery = new QSqlQuery();
+    //simpleQuery = new QSqlQuery();
 
     tableWidget = new QTableWidget();
 
-    tableModel = new QSqlTableModel();
+    //tableModel = new QSqlTableModel();
     tableView = new QTableView();
     //tableView->setModel(tableModel);
 
@@ -37,6 +37,7 @@ void DataBase::AddDataBase(QString driver, QString nameDB)
 {
 
     *dataBase = QSqlDatabase::addDatabase(driver, nameDB);
+    tableModel = new QSqlTableModel();
 
 }
 
@@ -84,13 +85,17 @@ void DataBase::RequestToDB(QString request)
 
     ///Тут должен быть код ДЗ
     //*simpleQuery = QSqlQuery(*dataBase);
-    queryModel->setQuery(request);
+    queryModel->setQuery(request, *dataBase);
+    //tableModel->select();
+    //tableView->setModel(tableModel);
+    /*
     for (uint32_t i = 0, j = 0; i < queryModel->columnCount(); i++, j++)
     {
         queryModel->setHeaderData(i, Qt::Horizontal, headers[j]);
     }
+    */
     QSqlError err;
-    emit sig_SendStatusRequest(err, headers);
+    emit sig_SendStatusRequest(err);
 
     /*
     if (simpleQuery->exec(request) == false)
@@ -217,8 +222,8 @@ void DataBase::ReadAnswerFromDB(int requestType)
         break;
     }
 
-    tableView->setModel(tableModel);
     tableModel->select();
+    tableView->setModel(tableModel);
 
     emit sig_SendDataFromDB(tableView, requestType);
 

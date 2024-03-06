@@ -244,7 +244,7 @@ void MainWindow::ReceiveStatusConnectionToDB(bool status)
 }
 
 //void MainWindow::ReceiveStatusRequestToDB(QSqlError err)
-void MainWindow::ReceiveStatusRequestToDB(QSqlError err, const QStringList *headers)
+void MainWindow::ReceiveStatusRequestToDB(QSqlError err)
 {
     if(err.type() != QSqlError::NoError){
         msg->setText(err.text());
