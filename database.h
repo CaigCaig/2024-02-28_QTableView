@@ -9,6 +9,8 @@
 #include <QSqlQuery>
 #include <QSqlTableModel>
 #include <QSqlQueryModel>
+#include <QMessageBox>
+#include <QDebug>
 
 #define POSTGRE_DRIVER "QPSQL"
 #define DB_NAME "MyDB"
@@ -69,6 +71,7 @@ private:
     QSqlQueryModel* queryModel;
     QSqlTableModel* tableModel;
     QStringList* headers;
+    QMessageBox* msg;
 
 };
 

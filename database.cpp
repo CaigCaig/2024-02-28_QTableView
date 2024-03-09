@@ -17,6 +17,7 @@ DataBase::DataBase(QObject *parent)
     queryModel = new QSqlQueryModel();
     headers = new QStringList();
 
+    msg = new QMessageBox();
 }
 
 DataBase::~DataBase()
@@ -37,7 +38,7 @@ void DataBase::AddDataBase(QString driver, QString nameDB)
 {
 
     *dataBase = QSqlDatabase::addDatabase(driver, nameDB);
-    tableModel = new QSqlTableModel();
+    tableModel = new QSqlTableModel(this, *dataBase);
 
 }
 
@@ -86,6 +87,16 @@ void DataBase::RequestToDB(QString request)
     ///Тут должен быть код ДЗ
     //*simpleQuery = QSqlQuery(*dataBase);
     queryModel->setQuery(request, *dataBase);
+    queryModel->setHeaderData(0, Qt::Horizontal, "Название");
+    queryModel->setHeaderData(1, Qt::Horizontal, "Год выпуска");
+    queryModel->setHeaderData(2, Qt::Horizontal, "Жанр");
+    /*
+    tableView->setModel(tableModel);
+    tableModel->select();
+    //tableView->setModel(tableModel);
+    tableView->show();
+    */
+
     //tableModel->select();
     //tableView->setModel(tableModel);
     /*
@@ -94,7 +105,12 @@ void DataBase::RequestToDB(QString request)
         queryModel->setHeaderData(i, Qt::Horizontal, headers[j]);
     }
     */
-    QSqlError err;
+    QSqlError err = dataBase->lastError();
+    qDebug() << err.text();
+    //msg->setIcon(QMessageBox::Critical);
+    //msg->setText(err.text());
+    //msg->show();
+    //msg->exec();
     emit sig_SendStatusRequest(err);
 
     /*
@@ -122,9 +138,9 @@ void DataBase::ReadAnswerFromDB(int requestType)
     //Для наших запросов вид таблицы не поменяетя. Поэтому будет единый обработчик.
     case requestAllFilms:
         //tableModel-
-        tableModel->setHeaderData(0, Qt::Horizontal, "Название");
-        tableModel->setHeaderData(1, Qt::Horizontal, "Год выпуска");
-        tableModel->setHeaderData(2, Qt::Horizontal, "Жанр");
+        //tableModel->setHeaderData(0, Qt::Horizontal, "Название");
+        //tableModel->setHeaderData(1, Qt::Horizontal, "Год выпуска");
+        //tableModel->setHeaderData(2, Qt::Horizontal, "Жанр");
 
         //queryModel->
 
@@ -222,8 +238,11 @@ void DataBase::ReadAnswerFromDB(int requestType)
         break;
     }
 
-    tableModel->select();
+
     tableView->setModel(tableModel);
+    tableModel->select();
+    tableView->show();
+
 
     emit sig_SendDataFromDB(tableView, requestType);
 
