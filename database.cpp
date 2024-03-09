@@ -90,12 +90,11 @@ void DataBase::RequestToDB(QString request)
     queryModel->setHeaderData(0, Qt::Horizontal, "Название");
     queryModel->setHeaderData(1, Qt::Horizontal, "Год выпуска");
     queryModel->setHeaderData(2, Qt::Horizontal, "Жанр");
-    /*
+    tableModel->setTable("film");
     tableView->setModel(tableModel);
     tableModel->select();
     //tableView->setModel(tableModel);
     tableView->show();
-    */
 
     //tableModel->select();
     //tableView->setModel(tableModel);
@@ -238,11 +237,11 @@ void DataBase::ReadAnswerFromDB(int requestType)
         break;
     }
 
-
+    /*
     tableView->setModel(tableModel);
     tableModel->select();
     tableView->show();
-
+*/
 
     emit sig_SendDataFromDB(tableView, requestType);
 
