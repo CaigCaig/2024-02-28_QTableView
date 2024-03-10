@@ -85,18 +85,17 @@ void DataBase::RequestToDB(QString request)
 {
 
     ///Тут должен быть код ДЗ
-    //*simpleQuery = QSqlQuery(*dataBase);
     queryModel->setQuery(request, *dataBase);
-    //queryModel->setHeaderData(0, Qt::Horizontal, "Название");
-    //queryModel->setHeaderData(1, Qt::Horizontal, "Год выпуска");
-    //queryModel->setHeaderData(2, Qt::Horizontal, "Жанр");
     tableModel->setTable("film");
-    //tableView->setModel(tableModel);
     tableModel->select();
-    tableModel->setHeaderData(0, Qt::Horizontal, tr("Название"));
-    tableModel->setHeaderData(1, Qt::Horizontal, tr("Год выпуска"));
-    tableModel->setHeaderData(2, Qt::Horizontal, tr("Жанр"));
+    //tableModel->setHeaderData(0, Qt::Horizontal, tr("Название"));
+    //tableModel->setHeaderData(1, Qt::Horizontal, tr("Год выпуска"));
+    //tableModel->setHeaderData(2, Qt::Horizontal, tr("Жанр"));
     tableView->setModel(tableModel);
+    for (int i = 3; i < tableModel->columnCount(); i++)
+    {
+        tableView->hideColumn(i);
+    }
     tableView->show();
 
     //tableModel->select();

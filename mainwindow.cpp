@@ -119,7 +119,9 @@ void MainWindow::on_pb_request_clicked()
     }
 
     auto req = [&]{dataBase->RequestToDB(request);};
-    QtConcurrent::run(req);
+    //QtConcurrent::run(req);
+    dataBase->RequestToDB(request);
+    //ui->tv_result->setModel();
 
 }
 
