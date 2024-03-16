@@ -60,7 +60,7 @@ signals:
     void sig_SendDataFromDB(const QTableView *tableVw, int typeR);
     void sig_SendStatusConnection(bool);
     //void sig_SendStatusRequest(QSqlError err);
-    void sig_SendStatusRequest(QSqlError err);
+    void sig_SendStatusRequest(QSqlError err, QSqlTableModel *tableModel);
 
 private:
 

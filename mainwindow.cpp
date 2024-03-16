@@ -246,7 +246,7 @@ void MainWindow::ReceiveStatusConnectionToDB(bool status)
 }
 
 //void MainWindow::ReceiveStatusRequestToDB(QSqlError err)
-void MainWindow::ReceiveStatusRequestToDB(QSqlError err)
+void MainWindow::ReceiveStatusRequestToDB(QSqlError err, QSqlTableModel *tableModel)
 {
     if(err.type() != QSqlError::NoError){
         msg->setText(err.text());
@@ -269,6 +269,18 @@ void MainWindow::ReceiveStatusRequestToDB(QSqlError err)
             break;
         }
         dataBase->ReadAnswerFromDB(request_type);
+
+        tableModel->clear();
+        tableModel->setTable("film");
+        tableModel->select();
+        tableModel->removeColumns(0, 1);
+        tableModel->removeColumns(2, 11);
+        tableModel->setHeaderData(0, Qt::Horizontal, tr("Название фильма"));
+        tableModel->setHeaderData(1, Qt::Horizontal, tr("Описание фильма"));
+        tableModel->setHeaderData(2, Qt::Horizontal, tr("Жанр"));
+        ui->tv_result->setModel(tableModel);
+        //tableView.setModel(tableModel);
+
     }
 }
 
