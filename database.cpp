@@ -8,14 +8,14 @@ DataBase::DataBase(QObject *parent)
 
     //simpleQuery = new QSqlQuery();
 
-    tableWidget = new QTableWidget();
+    //tableWidget = new QTableWidget();
 
     //tableModel = new QSqlTableModel();
     tableView = new QTableView();
     //tableView->setModel(tableModel);
 
     queryModel = new QSqlQueryModel();
-    headers = new QStringList();
+    //headers = new QStringList();
 
     msg = new QMessageBox();
 }
@@ -26,7 +26,7 @@ DataBase::~DataBase()
     //delete simpleQuery;
     delete queryModel;
     delete tableView;
-    delete headers;
+    //delete headers;
 }
 
 /*!
@@ -83,11 +83,12 @@ void DataBase::DisconnectFromDataBase(QString nameDb)
  */
 void DataBase::RequestToDB(QString request)
 {
-
     ///Тут должен быть код ДЗ
     queryModel->setQuery(request, *dataBase);
     QSqlError err = dataBase->lastError();
-    emit sig_SendStatusRequest(err, tableModel);
+    //emit sig_SendStatusRequest(err, tableModel);
+    //emit sig_SendStatusRequest(err, queryModel);
+    emit sig_SendStatusRequest(err);
 
     /*
     if (simpleQuery->exec(request) == false)
@@ -105,18 +106,37 @@ void DataBase::ReadAnswerFromDB(int requestType)
     /*
      * Используем оператор switch для разделения запросов
     */
-    QStringList hdrs;
+    //QStringList hdrs;
     //QString str;
-    QVariantList vlist;
-    uint32_t conterRows = 0;
+    //QVariantList vlist;
+    //uint32_t conterRows = 0;
 
     switch (requestType) {
     //Для наших запросов вид таблицы не поменяетя. Поэтому будет единый обработчик.
     case requestAllFilms:
+        tableModel->clear();
+        tableModel->setTable("film");
+        tableModel->removeColumns(0, 1);
+        tableModel->removeColumns(2, 11);
+        tableModel->setHeaderData(0, Qt::Horizontal, tr("Название фильма"));
+        tableModel->setHeaderData(1, Qt::Horizontal, tr("Описание фильма"));
+        tableModel->setHeaderData(2, Qt::Horizontal, tr("Жанр"));
+        tableView->setModel(tableModel);
         break;
     case requestComedy:
+        //queryModel->clear();
+        //queryModel->setTable("film");
+        //queryModel->select();
+        //queryModel->removeColumns(0, 1);
+        //queryModel->removeColumns(2, 11);
+        //queryModel->setHeaderData(0, Qt::Horizontal, tr("Название фильма"));
+        //queryModel->setHeaderData(1, Qt::Horizontal, tr("Описание фильма"));
+        //queryModel->removeColumns(2, 1);
+        //queryModel->setHeaderData(2, Qt::Horizontal, tr("Жанр"));
+        tableView->setModel(queryModel);
         break;
     case requestHorrors:
+        tableView->setModel(queryModel);
         break;
 
     default:

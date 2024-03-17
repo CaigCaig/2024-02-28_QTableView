@@ -57,20 +57,20 @@ public:
 signals:
 
     //void sig_SendDataFromDB(const QTableWidget *tableWg, int typeR);
-    void sig_SendDataFromDB(const QTableView *tableVw, int typeR);
+    void sig_SendDataFromDB(QTableView *tableVw, int typeR);
     void sig_SendStatusConnection(bool);
-    //void sig_SendStatusRequest(QSqlError err);
-    void sig_SendStatusRequest(QSqlError err, QSqlTableModel *tableModel);
+    void sig_SendStatusRequest(QSqlError err);
+    //void sig_SendStatusRequest(QSqlError err, QSqlTableModel *tableModel);
 
 private:
 
     QSqlDatabase* dataBase;
-    QSqlQuery* simpleQuery;
-    QTableWidget* tableWidget;
+    //QSqlQuery* simpleQuery;
+    //QTableWidget* tableWidget;
     QTableView* tableView;
     QSqlQueryModel* queryModel;
     QSqlTableModel* tableModel;
-    QStringList* headers;
+    //QStringList* headers;
     QMessageBox* msg;
 
 };

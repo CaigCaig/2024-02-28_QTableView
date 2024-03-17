@@ -131,7 +131,7 @@ void MainWindow::on_pb_request_clicked()
  * \param typeRequest
  */
 
-void MainWindow::ScreenDataFromDB(const QTableView *view, int typeRequest)
+void MainWindow::ScreenDataFromDB(QTableView *view, int typeRequest)
 {
 
     ///Тут должен быть код ДЗ
@@ -146,7 +146,7 @@ void MainWindow::ScreenDataFromDB(const QTableView *view, int typeRequest)
             //    view->model()->setHeaderData(i, Qt::Horizontal, headers[j])
                 //hdrs << view->model()horizontalHeaderItem(i)->text();
             //}
-            ui->tv_result->show();
+            ui->tv_result = view;
             break;
         case requestHorrors:
             break;
@@ -245,8 +245,8 @@ void MainWindow::ReceiveStatusConnectionToDB(bool status)
 
 }
 
-//void MainWindow::ReceiveStatusRequestToDB(QSqlError err)
-void MainWindow::ReceiveStatusRequestToDB(QSqlError err, QSqlTableModel *tableModel)
+void MainWindow::ReceiveStatusRequestToDB(QSqlError err)
+//void MainWindow::ReceiveStatusRequestToDB(QSqlError err, QSqlTableModel *tableModel)
 {
     if(err.type() != QSqlError::NoError){
         msg->setText(err.text());
@@ -270,6 +270,7 @@ void MainWindow::ReceiveStatusRequestToDB(QSqlError err, QSqlTableModel *tableMo
         }
         dataBase->ReadAnswerFromDB(request_type);
 
+        /*
         tableModel->clear();
         tableModel->setTable("film");
         tableModel->select();
@@ -279,8 +280,33 @@ void MainWindow::ReceiveStatusRequestToDB(QSqlError err, QSqlTableModel *tableMo
         tableModel->setHeaderData(1, Qt::Horizontal, tr("Описание фильма"));
         tableModel->setHeaderData(2, Qt::Horizontal, tr("Жанр"));
         ui->tv_result->setModel(tableModel);
+        */
+
+        /*
+        queryModel->clear();
+        queryModel->setTable("film");
+        queryModel->select();
+        queryModel->removeColumns(0, 1);
+        queryModel->removeColumns(2, 11);
+        queryModel->setHeaderData(0, Qt::Horizontal, tr("Название фильма"));
+        queryModel->setHeaderData(1, Qt::Horizontal, tr("Описание фильма"));
+        queryModel->removeColumns(2, 1);
+        queryModel->setHeaderData(2, Qt::Horizontal, tr("Жанр"));
+        ui->tv_result->setModel(queryModel);
+        */
+
         //tableView.setModel(tableModel);
 
     }
+}
+
+/*
+логику работы с tableModel нужно перенести в DataBase! И там в зависимости от выбранного запроса или запрашивать и передавать в главное окно указатель на tableModel или делать тоже самое но с queryModel.
+*/
+
+
+void MainWindow::on_pb_clear_clicked()
+{
+    //ui->tv_result->;
 }
 
