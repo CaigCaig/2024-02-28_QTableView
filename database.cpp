@@ -11,7 +11,7 @@ DataBase::DataBase(QObject *parent)
     //tableWidget = new QTableWidget();
 
     //tableModel = new QSqlTableModel();
-    tableView = new QTableView();
+    //tableView = new QTableView();
     //tableView->setModel(tableModel);
 
     queryModel = new QSqlQueryModel();
@@ -25,7 +25,7 @@ DataBase::~DataBase()
     delete dataBase;
     //delete simpleQuery;
     delete queryModel;
-    delete tableView;
+    //delete tableView;
     //delete headers;
 }
 
@@ -116,33 +116,37 @@ void DataBase::ReadAnswerFromDB(int requestType)
     case requestAllFilms:
         tableModel->clear();
         tableModel->setTable("film");
+        tableModel->select();
         tableModel->removeColumns(0, 1);
         tableModel->removeColumns(2, 11);
         tableModel->setHeaderData(0, Qt::Horizontal, tr("Название фильма"));
         tableModel->setHeaderData(1, Qt::Horizontal, tr("Описание фильма"));
         tableModel->setHeaderData(2, Qt::Horizontal, tr("Жанр"));
-        tableView->setModel(tableModel);
+        //tableView->setModel(tableModel);
+        emit sig_SendDataFromDB_TM(tableModel);
         break;
     case requestComedy:
-        //queryModel->clear();
+        queryModel->clear();
         //queryModel->setTable("film");
         //queryModel->select();
         //queryModel->removeColumns(0, 1);
         //queryModel->removeColumns(2, 11);
-        //queryModel->setHeaderData(0, Qt::Horizontal, tr("Название фильма"));
-        //queryModel->setHeaderData(1, Qt::Horizontal, tr("Описание фильма"));
+        queryModel->setHeaderData(0, Qt::Horizontal, tr("Название фильма"));
+        queryModel->setHeaderData(1, Qt::Horizontal, tr("Описание фильма"));
         //queryModel->removeColumns(2, 1);
-        //queryModel->setHeaderData(2, Qt::Horizontal, tr("Жанр"));
-        tableView->setModel(queryModel);
+        queryModel->setHeaderData(2, Qt::Horizontal, tr("Жанр"));
+        //tableView->setModel(queryModel);
+        emit sig_SendDataFromDB_QM(queryModel);
         break;
     case requestHorrors:
-        tableView->setModel(queryModel);
+        //tableView->setModel(queryModel);
+        emit sig_SendDataFromDB_QM(queryModel);
         break;
 
     default:
         break;
     }
-    emit sig_SendDataFromDB(tableView, requestType);
+    //emit sig_SendDataFromDB(tableView, requestType);
 
 }
 

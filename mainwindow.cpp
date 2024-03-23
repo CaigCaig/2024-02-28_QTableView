@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
     dataBase = new DataBase(this);
     msg = new QMessageBox(this);
 
+    tableView = new QTableView();
+
     //Установим размер вектора данных для подключения к БД
     dataForConnect.resize(NUM_DATA_FOR_CONNECT_TO_DB);
 
@@ -39,6 +41,8 @@ MainWindow::MainWindow(QWidget *parent)
      * Соединяем сигнал, который передает ответ от БД с методом, который отображает ответ в ПИ
      */
      connect(dataBase, &DataBase::sig_SendDataFromDB, this, &MainWindow::ScreenDataFromDB);
+     connect(dataBase, &DataBase::sig_SendDataFromDB_TM, this, &MainWindow::ScreenDataFromDB_TM);
+     connect(dataBase, &DataBase::sig_SendDataFromDB_QM, this, &MainWindow::ScreenDataFromDB_QM);
 
     /*
      *  Сигнал для подключения к БД
@@ -51,6 +55,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    delete tableView;
     delete ui;
 }
 
@@ -130,6 +135,20 @@ void MainWindow::on_pb_request_clicked()
  * \param view
  * \param typeRequest
  */
+
+void MainWindow::ScreenDataFromDB_TM(QSqlTableModel *tableModel)
+{
+    tableView->setModel(tableModel);
+    tableView->model()->submit();
+    ui->tv_result = tableView;
+}
+void MainWindow::ScreenDataFromDB_QM(QSqlQueryModel *queryModel)
+{
+    tableView->setModel(queryModel);
+    tableView->model()->submit();
+    ui->tv_result = tableView;
+}
+
 
 void MainWindow::ScreenDataFromDB(QTableView *view, int typeRequest)
 {
