@@ -19,8 +19,6 @@ MainWindow::MainWindow(QWidget *parent)
     dataBase = new DataBase(this);
     msg = new QMessageBox(this);
 
-    tableView = new QTableView();
-
     //Установим размер вектора данных для подключения к БД
     dataForConnect.resize(NUM_DATA_FOR_CONNECT_TO_DB);
 
@@ -54,7 +52,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    delete tableView;
     delete ui;
 }
 
@@ -194,14 +191,10 @@ void MainWindow::ReceiveStatusRequestToDB(QSqlError err)
     }
 }
 
-/*
-логику работы с tableModel нужно перенести в DataBase! И там в зависимости от выбранного запроса или запрашивать и передавать в главное окно указатель на tableModel или делать тоже самое но с queryModel.
-*/
-
-
 void MainWindow::on_pb_clear_clicked()
 {
     QSqlTableModel* tableModel_clear;
     ui->tv_result->setModel(tableModel_clear);
+    delete tableModel_clear;
 }
 

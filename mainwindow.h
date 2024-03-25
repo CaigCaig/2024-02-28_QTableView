@@ -51,8 +51,6 @@ private:
     DataBase* dataBase;
     QMessageBox* msg;
 
-    QTableView* tableView;
-
     QString request = "";
 
     QString request_all = "SELECT title, release_year, c.name  FROM film f "
