@@ -57,7 +57,6 @@ public:
 signals:
 
     //void sig_SendDataFromDB(const QTableWidget *tableWg, int typeR);
-    void sig_SendDataFromDB(QTableView *tableVw, int typeR);
     void sig_SendDataFromDB_TM(QSqlTableModel* tableModel);
     void sig_SendDataFromDB_QM(QSqlQueryModel* queryModel);
     void sig_SendStatusConnection(bool);

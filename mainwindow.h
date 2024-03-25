@@ -24,7 +24,6 @@ public:
 
 public slots:
     //void ScreenDataFromDB(const QTableWidget *widget, int typeRequest);
-    void ScreenDataFromDB(QTableView *view, int typeRequest);
     void ScreenDataFromDB_TM(QSqlTableModel *tableModel);
     void ScreenDataFromDB_QM(QSqlQueryModel *queryModel);
     void ReceiveStatusConnectionToDB(bool status);

@@ -40,7 +40,6 @@ MainWindow::MainWindow(QWidget *parent)
     /*
      * Соединяем сигнал, который передает ответ от БД с методом, который отображает ответ в ПИ
      */
-     connect(dataBase, &DataBase::sig_SendDataFromDB, this, &MainWindow::ScreenDataFromDB);
      connect(dataBase, &DataBase::sig_SendDataFromDB_TM, this, &MainWindow::ScreenDataFromDB_TM);
      connect(dataBase, &DataBase::sig_SendDataFromDB_QM, this, &MainWindow::ScreenDataFromDB_QM);
 
@@ -124,9 +123,7 @@ void MainWindow::on_pb_request_clicked()
     }
 
     auto req = [&]{dataBase->RequestToDB(request);};
-    //QtConcurrent::run(req);
     dataBase->RequestToDB(request);
-    //ui->tv_result->setModel();
 
 }
 
@@ -138,108 +135,14 @@ void MainWindow::on_pb_request_clicked()
 
 void MainWindow::ScreenDataFromDB_TM(QSqlTableModel *tableModel)
 {
-    tableView->setModel(tableModel);
-    tableView->model()->submit();
-    ui->tv_result = tableView;
+    ui->tv_result->setModel(tableModel);
+    ui->tv_result->resizeColumnsToContents();
 }
 void MainWindow::ScreenDataFromDB_QM(QSqlQueryModel *queryModel)
 {
-    tableView->setModel(queryModel);
-    tableView->model()->submit();
-    ui->tv_result = tableView;
+    ui->tv_result->setModel(queryModel);
+    ui->tv_result->resizeColumnsToContents();
 }
-
-
-void MainWindow::ScreenDataFromDB(QTableView *view, int typeRequest)
-{
-
-    ///Тут должен быть код ДЗ
-    if (view->model() != nullptr)
-    {
-        view->model()->submit();
-        switch (typeRequest)
-        {
-        case requestAllFilms:
-            //QList<QString> hdrs;
-            //for(int i = 0, j = 0; i < view->model()->columnCount(); i++, j++){
-            //    view->model()->setHeaderData(i, Qt::Horizontal, headers[j])
-                //hdrs << view->model()horizontalHeaderItem(i)->text();
-            //}
-            ui->tv_result = view;
-            break;
-        case requestHorrors:
-            break;
-        case requestComedy:
-
-
-            /*
-            ui->tb_result->setRowCount(widget->rowCount( ));
-            ui->tb_result->setColumnCount(widget->columnCount( ));
-            QStringList hdrs;
-            for(int i = 0; i < widget->columnCount(); ++i){
-                hdrs << widget->horizontalHeaderItem(i)->text();
-            }
-            ui->tb_result->setHorizontalHeaderLabels(hdrs);
-
-            for(int i = 0; i<widget->rowCount(); ++i){
-                for(int j = 0; j<widget->columnCount(); ++j){
-                    ui->tb_result->setItem(i,j, widget->item(i,j)->clone());
-                }
-            }
-
-            ui->tb_result->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-            */
-
-
-
-            break;
-        default:
-            break;
-        }
-    }
-}
-
-/*!
- * \brief Слот отображает значение в QTableWidget
- * \param widget
- * \param typeRequest
- */
-
-/*
-void MainWindow::ScreenDataFromDB(const QTableWidget *widget, int typeRequest)
-{
-
-    ///Тут должен быть код ДЗ
-    switch (typeRequest) {
-
-    case requestAllFilms:
-    case requestHorrors:
-    case requestComedy:{
-
-        ui->tb_result->setRowCount(widget->rowCount( ));
-        ui->tb_result->setColumnCount(widget->columnCount( ));
-        QStringList hdrs;
-        for(int i = 0; i < widget->columnCount(); ++i){
-            hdrs << widget->horizontalHeaderItem(i)->text();
-        }
-        ui->tb_result->setHorizontalHeaderLabels(hdrs);
-
-        for(int i = 0; i<widget->rowCount(); ++i){
-            for(int j = 0; j<widget->columnCount(); ++j){
-                ui->tb_result->setItem(i,j, widget->item(i,j)->clone());
-            }
-        }
-
-        ui->tb_result->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-        break;
-
-    }
-    default:
-        break;
-    }
-}
-*/
 
 /*!
  * \brief Метод изменяет стотояние формы в зависимости от статуса подключения к БД
@@ -289,33 +192,6 @@ void MainWindow::ReceiveStatusRequestToDB(QSqlError err)
         }
         dataBase->ReadAnswerFromDB(request_type);
 
-        /*
-        tableModel->clear();
-        tableModel->setTable("film");
-        tableModel->select();
-        tableModel->removeColumns(0, 1);
-        tableModel->removeColumns(2, 11);
-        tableModel->setHeaderData(0, Qt::Horizontal, tr("Название фильма"));
-        tableModel->setHeaderData(1, Qt::Horizontal, tr("Описание фильма"));
-        tableModel->setHeaderData(2, Qt::Horizontal, tr("Жанр"));
-        ui->tv_result->setModel(tableModel);
-        */
-
-        /*
-        queryModel->clear();
-        queryModel->setTable("film");
-        queryModel->select();
-        queryModel->removeColumns(0, 1);
-        queryModel->removeColumns(2, 11);
-        queryModel->setHeaderData(0, Qt::Horizontal, tr("Название фильма"));
-        queryModel->setHeaderData(1, Qt::Horizontal, tr("Описание фильма"));
-        queryModel->removeColumns(2, 1);
-        queryModel->setHeaderData(2, Qt::Horizontal, tr("Жанр"));
-        ui->tv_result->setModel(queryModel);
-        */
-
-        //tableView.setModel(tableModel);
-
     }
 }
 
@@ -326,6 +202,11 @@ void MainWindow::ReceiveStatusRequestToDB(QSqlError err)
 
 void MainWindow::on_pb_clear_clicked()
 {
-    //ui->tv_result->;
+    //ui->tv_result->clearSpans();
+    //ui->tv_result->hideColumn(0);
+    //ui->tv_result->hideColumn(1);
+    ui->tv_result->selectAll();
+    ui->tv_result->clearSelection();
+    ui->tv_result->update();
 }
 
