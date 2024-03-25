@@ -168,7 +168,6 @@ void MainWindow::ReceiveStatusConnectionToDB(bool status)
 }
 
 void MainWindow::ReceiveStatusRequestToDB(QSqlError err)
-//void MainWindow::ReceiveStatusRequestToDB(QSqlError err, QSqlTableModel *tableModel)
 {
     if(err.type() != QSqlError::NoError){
         msg->setText(err.text());
@@ -202,11 +201,7 @@ void MainWindow::ReceiveStatusRequestToDB(QSqlError err)
 
 void MainWindow::on_pb_clear_clicked()
 {
-    //ui->tv_result->clearSpans();
-    //ui->tv_result->hideColumn(0);
-    //ui->tv_result->hideColumn(1);
-    ui->tv_result->selectAll();
-    ui->tv_result->clearSelection();
-    ui->tv_result->update();
+    QSqlTableModel* tableModel_clear;
+    ui->tv_result->setModel(tableModel_clear);
 }
 
